@@ -1,0 +1,40 @@
+{
+    "name": "paskuale75/yii2-uppy",
+    "description": "Wrapper for Uppy uploader jQuery widget",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pasquale Pellicani",
+            "email": "pellicanipasquale@gmail.com",
+            "homepage": "http://www.paskuale.it"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "yiisoft/yii2": "~2.0.14",
+        "yiisoft/yii2-bootstrap4": "^2.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/paskuale75/comuni-italiani"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "paskuale75\\uppy\\": "src"
+        }
+    }
+}
