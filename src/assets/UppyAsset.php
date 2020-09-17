@@ -6,9 +6,9 @@ use yii\web\AssetBundle;
 
 
 class UppyAsset extends AssetBundle{
-    public $sourcePath = '@bower/uppy/';
+    public $sourcePath = '@bower/uppy';
     public $js = [
-        'src/core/Core.js'
+        'bin/build-js.js'
     ];
     public $css = [
         '/core/dist/style.css',
