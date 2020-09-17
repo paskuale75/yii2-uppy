@@ -4,7 +4,7 @@ namespace paskuale75\uppy;
 
 use paskuale75\uppy\assets\UppyAsset;
 use yii\base\Widget;
-
+use yii\bootstrap4\Html;
 
 class Uppyuploader extends Widget
 {
@@ -22,6 +22,7 @@ class Uppyuploader extends Widget
         $id = $this->getId();
         $this->registerPlugin();
         $this->registerJS();
+        echo Html::tag('div','',['id'=> 'drag-drop-area']);
     }
 
 
