@@ -1,9 +1,7 @@
 <?php
 namespace paskuale75\uppy\assets;
 
-
 use yii\web\AssetBundle;
-
 
 class UppyAsset extends AssetBundle{
     public $sourcePath = '@bower/uppy';
@@ -16,5 +14,6 @@ class UppyAsset extends AssetBundle{
     ];
     public $depends = [
         'yii\web\JqueryAsset',
+        'RequireAsset'
     ];
 }
