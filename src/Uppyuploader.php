@@ -37,7 +37,7 @@ class Uppyuploader extends Widget
         $clientOptions = json_encode($this->clientOptions);
 
         $js = <<<JS
-import Uppy = require('@uppy/core')
+const Uppy = require('@uppy/core')
 var uppy = Uppy.Core()
   uppy.use(Uppy.DragDrop, { target: '#drag-drop-area' })
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
