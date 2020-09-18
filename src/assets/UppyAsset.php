@@ -4,7 +4,7 @@ namespace paskuale75\uppy\assets;
 use yii\web\AssetBundle;
 
 class UppyAsset extends AssetBundle{
-    public $sourcePath = '@npm/uppy';
+    public $sourcePath = '@npm/uppy/dist';
     public $js = [
         'uppy.js'
     ];
