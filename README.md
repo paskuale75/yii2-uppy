@@ -15,5 +15,6 @@ or run:
 You can manually install **yii2-uppy** by [downloading the source in ZIP-format](https://github.com/paskuale75/yii2-uppy/archive/master.zip).
 
 ## P.S.
-You may encounter problems with the 'composer update' command if you are using composer version 1.10.13, downgrade to 1.10.10 and everything will work as it should.
-
+You may encounter problems with the 'composer update' command if you are using composer version 1.10.13, 
+downgrade to 1.10.10 and everything will work as it should.
+Downgrade with   `"composer self-update 1.10.10"`
