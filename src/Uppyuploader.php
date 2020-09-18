@@ -12,11 +12,9 @@ class Uppyuploader extends Widget
     public $options = []; //
     public $clientOptions = [];
     public $coreOptions = [];
+    public $dragDropOptions = [];
 
-    /**
-     * @locale : language pack
-     */
-    public $locale = 'it_IT';
+    
 
     public function init()
     {
@@ -28,15 +26,18 @@ class Uppyuploader extends Widget
         $id = $this->getId();
         $this->registerPlugin();
         $this->registerJS();
-        $content = $this->drawContentUploades();
-        echo Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
-        echo Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
-        echo Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
+        $this->drawDoms($id);
     }
 
-    private function drawContentUploades()
+    private function drawDoms($id)
     {
-        return Html::tag('h5', 'Uploaded files:<ol></ol>', []);
+        $content = Html::tag('h5', 'Uploaded files:<ol></ol>', []);
+        if(isset($this->dragDropOptions['target'])){
+            $targetClass = $this->dragDropOptions['target'];
+            echo Html::tag('div', '', ['class' => $targetClass, 'id' => $id]);
+        };
+        echo Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        echo Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
     }
 
     protected function registerPlugin()
@@ -47,13 +48,17 @@ class Uppyuploader extends Widget
 
     protected function registerJs()
     {
+        $locale = 'it_IT';
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
+        $dragDropOptions = json_encode($this->dragDropOptions);
 
-        $locale = ['locale' => 'Uppy.locales.' . $this->locale];
+
         if(isset($this->coreOptions['local'])){
-            $value = $this->coreOptions['local'];
-            $this->coreOptions['local'] = 'Uppy.locales.' . $value;
+            $locale = $this->coreOptions['local'];
+            $this->coreOptions['local'] = 'Uppy.locales.' . $locale;
+        }else{
+            $this->coreOptions['local'] = 'Uppy.locales.' . $locale;
         }
         $coreOptions = json_encode($this->coreOptions);
 
@@ -61,12 +66,13 @@ class Uppyuploader extends Widget
         $js = <<<JS
 
 var uppy = Uppy.Core({$coreOptions});
+
 uppy.use(Uppy.ProgressBar, { 
     target: '.for-ProgressBar',
      hideAfterFinish: false 
   });
   
-  uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
+  uppy.use(Uppy.DragDrop, { $dragDropOptions });
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
         $this->view->registerJs($js);
