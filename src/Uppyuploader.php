@@ -29,9 +29,9 @@ class Uppyuploader extends Widget
         $this->registerPlugin();
         $this->registerJS();
         $content = $this->drawContentUploades();
-        echo Html::tag('div', '', ['class' => 'drag-drop-area']);
-        echo Html::tag('div', '', ['class' => 'for-ProgressBar']);
-        echo Html::tag('div', $content, ['class' => 'uploaded-files']);
+        echo Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
+        echo Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        echo Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
     }
 
     private function drawContentUploades()
@@ -51,8 +51,12 @@ class Uppyuploader extends Widget
         $clientOptions = json_encode($this->clientOptions);
 
         $locale = ['locale' => 'Uppy.locales.' . $this->locale];
-        $this->coreOptions = array_merge($locale, $this->coreOptions);
+        if(isset($this->coreOptions['local'])){
+            $value = $this->coreOptions['local'];
+            $this->coreOptions['local'] = 'Uppy.locales.' . $value;
+        }
         $coreOptions = json_encode($this->coreOptions);
+
 
         $js = <<<JS
 
