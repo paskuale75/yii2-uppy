@@ -64,7 +64,7 @@ uppy.use(Uppy.ProgressBar, {
     target: '.for-ProgressBar',
      hideAfterFinish: false 
   });
-  uppy.use(Informer, {
+  uppy.use(Uppy.Informer, {
     // Options
   })
   uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
