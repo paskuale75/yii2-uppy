@@ -32,10 +32,10 @@ class Uppyuploader extends Widget
         echo Html::tag('div', '', ['class' => 'drag-drop-area']);
         echo Html::tag('div', '', ['class' => 'for-ProgressBar']);
         echo Html::tag('div', $content, ['class' => 'uploaded-files']);
-        
     }
 
-    private function drawContentUploades(){
+    private function drawContentUploades()
+    {
         return Html::tag('h5', 'Uploaded files:<ol></ol>', []);
     }
 
@@ -49,8 +49,8 @@ class Uppyuploader extends Widget
     {
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
-        
-        $locale = 'Uppy.locales.'.$this->locale;
+
+        $locale = ['locale' => 'Uppy.locales.' . $this->locale];
         $this->coreOptions = array_merge($locale, $this->coreOptions);
         $coreOptions = json_encode($this->coreOptions);
 
