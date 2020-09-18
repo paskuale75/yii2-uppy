@@ -22,9 +22,16 @@ class Uppyuploader extends Widget
         $id = $this->getId();
         $this->registerPlugin();
         $this->registerJS();
-        echo Html::tag('div','',['id'=> 'drag-drop-area']);
+        $content = $this->drawContentUploades();
+        echo Html::tag('div', '', ['class' => 'drag-drop-area']);
+        echo Html::tag('div', '', ['class' => 'for-ProgressBar']);
+        echo Html::tag('div', $content, ['class' => 'uploaded-files']);
+        
     }
 
+    private function drawContentUploades(){
+        return Html::tag('h5', 'Uploaded files:<ol></ol>', []);
+    }
 
     protected function registerPlugin()
     {
@@ -38,10 +45,19 @@ class Uppyuploader extends Widget
         $clientOptions = json_encode($this->clientOptions);
 
         $js = <<<JS
-const Uppy = require('@uppy/core')
-var uppy = Uppy.Core()
-  uppy.use(Uppy.DragDrop, { target: '#drag-drop-area' })
-  uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
+
+var uppy = Uppy.Core({
+    debug: true, 
+    autoProceed: true,
+    locale: Uppy.locales.it_IT
+});
+uppy.use(Uppy.ProgressBar, { 
+    target: '.for-ProgressBar',
+     hideAfterFinish: false 
+  });
+  
+  uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
+  uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
         $this->view->registerJs($js);
     }
