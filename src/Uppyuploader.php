@@ -31,6 +31,7 @@ class Uppyuploader extends Widget
         $content = $this->drawContentUploades();
         echo Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
         echo Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        echo Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
         echo Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
     }
 
@@ -62,10 +63,11 @@ class Uppyuploader extends Widget
 var uppy = Uppy.Core({$coreOptions});
 uppy.use(Uppy.ProgressBar, { 
     target: '.for-ProgressBar',
-     hideAfterFinish: false 
+    hideAfterFinish: false 
   });
   uppy.use(Uppy.Informer, {
     // Options
+    target: 'for-Informer'
   })
   uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
