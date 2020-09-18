@@ -11,6 +11,12 @@ class Uppyuploader extends Widget
 
     public $options = []; //
     public $clientOptions = [];
+    public $coreOptions = [];
+
+    /**
+     * @locale : language pack
+     */
+    public $locale = 'it_IT';
 
     public function init()
     {
@@ -43,14 +49,14 @@ class Uppyuploader extends Widget
     {
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
+        
+        $locale = 'Uppy.locales.'.$this->locale;
+        $this->coreOptions = array_merge($locale, $this->coreOptions);
+        $coreOptions = json_encode($this->coreOptions);
 
         $js = <<<JS
 
-var uppy = Uppy.Core({
-    debug: true, 
-    autoProceed: true,
-    locale: Uppy.locales.it_IT
-});
+var uppy = Uppy.Core({$coreOptions});
 uppy.use(Uppy.ProgressBar, { 
     target: '.for-ProgressBar',
      hideAfterFinish: false 
