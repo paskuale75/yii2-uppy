@@ -15,6 +15,7 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap4": "^2.0",
         "bower-asset/commonjs-require": "*",
+        "npm-asset/uppy": "^1.21"
     },
     "config": {
         "process-timeout": 1800,
@@ -34,6 +35,5 @@
         }
     },
     "require-dev": {
-        "npm-asset/uppy": "^1.21"
     }
 }
