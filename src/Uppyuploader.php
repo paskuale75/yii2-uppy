@@ -64,7 +64,9 @@ uppy.use(Uppy.ProgressBar, {
     target: '.for-ProgressBar',
      hideAfterFinish: false 
   });
-  
+  uppy.use(Informer, {
+    // Options
+  })
   uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
