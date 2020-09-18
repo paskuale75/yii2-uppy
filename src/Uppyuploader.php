@@ -67,7 +67,7 @@ uppy.use(Uppy.ProgressBar, {
   });
   uppy.use(Uppy.Informer, {
     // Options
-    target: 'for-Informer'
+    target: '.for-Informer'
   })
   uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
