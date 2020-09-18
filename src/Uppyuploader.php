@@ -14,7 +14,9 @@ class Uppyuploader extends Widget
     public $coreOptions = [];
     public $dragDropOptions = [];
 
-    
+    public $allJsCode;
+
+
 
     public function init()
     {
@@ -32,7 +34,7 @@ class Uppyuploader extends Widget
     private function drawDoms($id)
     {
         $content = Html::tag('h5', 'Uploaded files:<ol></ol>', []);
-        if(isset($this->dragDropOptions['target'])){
+        if (isset($this->dragDropOptions['target'])) {
             $targetClass = $this->dragDropOptions['target'];
             echo Html::tag('div', '', ['class' => $targetClass, 'id' => $id]);
         };
@@ -49,19 +51,18 @@ class Uppyuploader extends Widget
     protected function registerJs()
     {
         $locale = 'it_IT';
-        $options = json_encode($this->options);
-        $clientOptions = json_encode($this->clientOptions);
         $dragDropOptions = json_encode($this->dragDropOptions);
 
 
-        if(isset($this->coreOptions['local'])){
+        if (isset($this->coreOptions['local'])) {
             $locale = $this->coreOptions['local'];
             $this->coreOptions['local'] = 'Uppy.locales.' . $locale;
-        }else{
+        } else {
             $this->coreOptions['local'] = 'Uppy.locales.' . $locale;
         }
         $coreOptions = json_encode($this->coreOptions);
 
+        $this->registerDragDrop($dragDropOptions);
 
         $js = <<<JS
 
@@ -71,10 +72,20 @@ uppy.use(Uppy.ProgressBar, {
     target: '.for-ProgressBar',
      hideAfterFinish: false 
   });
-  
-  uppy.use(Uppy.DragDrop, { $dragDropOptions });
+  /* if(!empty($this->dragDropOptions)){
+    uppy.use(Uppy.DragDrop, { $dragDropOptions });
+  } */
   uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
+
+        $js .= $this->allJsCode;
         $this->view->registerJs($js);
+    }
+
+
+    private function registerDragDrop($dragDropOptions){
+        if(!empty($this->dragDropOptions)){
+            $this->allJsCode .= 'uppy.use(Uppy.DragDrop, { '.$dragDropOptions .'});';
+        }
     }
 }
