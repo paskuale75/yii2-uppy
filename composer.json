@@ -10,6 +10,7 @@
             "homepage": "http://www.paskuale.it"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
         "yiisoft/yii2": "~2.0.14",
