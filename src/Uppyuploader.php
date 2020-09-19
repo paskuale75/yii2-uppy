@@ -52,7 +52,7 @@ class Uppyuploader extends Widget
         $clientOptions = json_encode($this->clientOptions);
 
         if(isset($this->coreOptions['locale'])){
-            $value = $this->coreOptions['local'];
+            $value = $this->coreOptions['locale'];
             $this->coreOptions['locale'] = 'Uppy.locales.' . $value;
         }
         $coreOptions = json_encode($this->coreOptions);
