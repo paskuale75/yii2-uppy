@@ -5,6 +5,7 @@ namespace paskuale75\uppy;
 use paskuale75\uppy\assets\UppyAsset;
 use yii\base\Widget;
 use yii\bootstrap4\Html;
+use Yii;
 
 class Uppyuploader extends Widget
 {
@@ -51,15 +52,13 @@ class Uppyuploader extends Widget
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
 
-        if(isset($this->coreOptions['locale'])){
-            $value = $this->coreOptions['locale'];
-            $this->coreOptions['locale'] = 'Uppy.locales.' . $value;
-        }
+        $this->coreOptions['locale'] = 'Uppy.locales.'.Yii::$app->language;
+        
         $coreOptions = json_encode($this->coreOptions);
 
 
         $js = <<<JS
-
+console.log($coreOptions);
 var uppy = Uppy.Core({$coreOptions});
 uppy.use(Uppy.ProgressBar, { 
     target: '.for-ProgressBar',
