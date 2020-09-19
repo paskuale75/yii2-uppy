@@ -3,7 +3,6 @@
 namespace paskuale75\uppy;
 
 use paskuale75\uppy\assets\UppyAsset;
-use Yii;
 use yii\base\Widget;
 use yii\bootstrap4\Html;
 
@@ -52,13 +51,10 @@ class Uppyuploader extends Widget
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
 
-        if(isset(Yii::$app->params['language'])){
-            $value = Yii::$app->params['language'];
+        if(isset($this->coreOptions['locale'])){
+            $value = $this->coreOptions['locale'];
             $this->coreOptions['locale'] = 'Uppy.locales.' . $value;
-        }else{
-            $this->coreOptions['locale'] = 'Uppy.locales.' . $this->locale;
         }
-        
         $coreOptions = json_encode($this->coreOptions);
 
 
