@@ -13,7 +13,6 @@ class UppyAsset extends AssetBundle{
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'paskuale75\uppy\assets\RequireAsset',
         'paskuale75\uppy\assets\UppyLocalesAsset'
     ];
 }

@@ -6,13 +6,13 @@ use yii\web\AssetBundle;
 
 class UppyLocalesAsset extends AssetBundle{
 
-    public $sourcePath = '@npm/uppy--locales/dist';
+    public $sourcePath = '@npm/uppy--locales/lib';
     
     public $js = [];
 
     public function init(){
         $this->js = [
-            Yii::$app->language.'.min.js'
+            'it_IT.js'
         ];
     }
 
