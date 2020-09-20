@@ -1,4 +1,6 @@
 <?php
+
+//dead
 namespace paskuale75\uppy\assets;
 
 use Yii;
@@ -6,7 +8,7 @@ use yii\web\AssetBundle;
 
 class UppyLocalesAsset extends AssetBundle{
 
-    public $sourcePath = '@npm/uppy--locales/lib';
+    /* public $sourcePath = '@npm/uppy--locales/lib';
     
     public $js = [];
 
@@ -19,5 +21,5 @@ class UppyLocalesAsset extends AssetBundle{
 
     
     
-    public $css = [];
+    public $css = []; */
 }

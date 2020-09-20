@@ -1,10 +1,12 @@
 <?php
+
+//dead
 namespace paskuale75\uppy\assets;
 
 use yii\web\AssetBundle;
 
 class RequireAsset extends AssetBundle{
-    public $sourcePath = '@bower/commonjs-require';
+    /* public $sourcePath = '@bower/commonjs-require';
     public $js = [
         'commonjs-require.js'
     ];
@@ -12,5 +14,5 @@ class RequireAsset extends AssetBundle{
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-    ];
+    ]; */
 }
