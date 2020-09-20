@@ -49,10 +49,12 @@ class Uppyuploader extends Widget
 
     protected function registerJs()
     {
+        $Yii2_lang = str_replace('-','_',Yii::$app->language);
+
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
 
-        $this->coreOptions['locale'] = 'Uppy.locales.'.Yii::$app->language;
+        $this->coreOptions['locale'] = 'Uppy.locales.'.$Yii2_lang;
         
         $coreOptions = json_encode($this->coreOptions);
 

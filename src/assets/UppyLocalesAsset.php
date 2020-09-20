@@ -11,8 +11,9 @@ class UppyLocalesAsset extends AssetBundle{
     public $js = [];
 
     public function init(){
+        $lang = str_replace('-','_',Yii::$app->language);
         $this->js = [
-            'it_IT.js'
+            "https://transloadit.edgly.net/releases/uppy/locales/v1.16.7/{$lang}.min.js"
         ];
     }
 
