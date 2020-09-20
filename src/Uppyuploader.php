@@ -13,27 +13,31 @@ class Uppyuploader extends Widget
     public $options = []; //
     public $clientOptions = [];
     public $coreOptions = [];
+    public $dragDropOptions = [];
 
     /**
-     * @locale : language pack
+     * @locale : default language pack
      */
     public $locale = 'it_IT';
 
     public function init()
     {
         parent::init();
+        $this->registerPlugin();
     }
 
     public function run()
     {
+        $html = '';
         $id = $this->getId();
-        $this->registerPlugin();
-        $this->registerJS();
+        
+        $this->registerJS($id);
         $content = $this->drawContentUploades();
-        echo Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
-        echo Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
-        echo Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
-        echo Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
+        //$html .= Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
+        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
+        $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
+        return $html;
     }
 
     private function drawContentUploades()
@@ -47,31 +51,30 @@ class Uppyuploader extends Widget
         UppyAsset::register($view);
     }
 
-    protected function registerJs()
+    private function registerJs($id)
     {
-        $Yii2_lang = str_replace('-','_',Yii::$app->language);
-
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
-
-        $this->coreOptions['locale'] = 'Uppy.locales.'.$Yii2_lang;
-        
+        $dragDropOptions = json_encode($this->dragDropOptions);
         $coreOptions = json_encode($this->coreOptions);
 
 
         $js = <<<JS
 console.log($coreOptions);
-var uppy = Uppy.Core({$coreOptions});
-uppy.use(Uppy.ProgressBar, { 
-    target: '.for-ProgressBar',
-    hideAfterFinish: false 
-  });
-  uppy.use(Uppy.Informer, {
-    // Options
-    target: '.for-Informer'
-  })
-  uppy.use(Uppy.DragDrop, { target: '.drag-drop-area' });
-  uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
+console.log($dragDropOptions);
+var identifier = $id;
+var $id = Uppy.Core({$coreOptions});
+
+    $id.use(Uppy.ProgressBar, { 
+        target: '.for-ProgressBar',
+        hideAfterFinish: false 
+    });
+    $id.use(Uppy.Informer, {
+        // Options
+        target: '.for-Informer'
+    })
+    $id.use(Uppy.DragDrop, {$dragDropOptions});
+    $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
         $this->view->registerJs($js);
     }
