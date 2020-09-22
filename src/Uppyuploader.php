@@ -55,7 +55,7 @@ class Uppyuploader extends Widget
         
         $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
         $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
-        if ($this->mode == self::MODE_DRAGDROP) {
+        if ($this->options['source']['type'] == self::MODE_DRAGDROP) {
             $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
         }
 
