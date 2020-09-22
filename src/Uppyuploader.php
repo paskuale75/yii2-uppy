@@ -88,6 +88,10 @@ class Uppyuploader extends Widget
                         })
                         $id.use(Uppy.DragDrop, {$sourceOptions});
                         $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
+                        $id.on('complete', result => {
+                            console.log('successful files:', result.successful)
+                            console.log('failed files:', result.failed)
+                        })
 JS;
                 break;
             case self::MODE_FILEINPUT:
@@ -107,6 +111,10 @@ JS;
                         })
                         $id.use(Uppy.FileInput, {$sourceOptions});
                         $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
+                        $id.on('complete', result => {
+                            console.log('successful files:', result.successful)
+                            console.log('failed files:', result.failed)
+                        })
 JS;
                 break;
         }
