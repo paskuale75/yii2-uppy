@@ -18,7 +18,6 @@ You can manually install **yii2-uppy** by [downloading the source in ZIP-format]
 ```php
 echo '<div  id="div_'.$myID.'" class="drag-drop-area col-md-12">';
 echo Uppyuploader::widget([
-    //'id' => 'uppy_'.$fmyID,
     'mode' => Uppyuploader::MODE_FILEINPUT,
     'options' => [
         'informer' => [
