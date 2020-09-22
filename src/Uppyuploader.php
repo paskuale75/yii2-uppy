@@ -32,21 +32,29 @@ class Uppyuploader extends Widget
 
     public function run()
     {
-        $html = '';
         $id = $this->getId();
-
         $this->registerJS($id);
-        $content = $this->drawContentUploades();
-        //$html .= Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
-        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
-        $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
-        $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
-        return $html;
+        return $this->drawHtmlElements();
     }
 
     private function drawContentUploades()
     {
         return Html::tag('h5', 'Uploaded files:<ol></ol>', []);
+    }
+
+    private function drawHtmlElements()
+    {
+        $id = $this->getId();
+        $html = '';
+        $content = $this->drawContentUploades();
+        
+        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
+        if ($this->mode == self::MODE_DRAGDROP) {
+            $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
+        }
+
+        return $html;
     }
 
     protected function registerPlugin()
