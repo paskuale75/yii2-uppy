@@ -6,6 +6,7 @@ use paskuale75\uppy\assets\UppyAsset;
 use yii\base\Widget;
 use yii\bootstrap4\Html;
 use Yii;
+use yii\web\HttpException;
 
 class Uppyuploader extends Widget
 {
@@ -69,39 +70,47 @@ class Uppyuploader extends Widget
 
     private function registerJs($id)
     {
-        $options = json_encode($this->options);
-        $clientOptions = json_encode($this->clientOptions);
-        $sourceOptions = json_encode($this->sourceOptions);
+        
         $coreOptions = json_encode($this->coreOptions);
+        if(!isset($this->options['source'])){
+            return new HttpException('505', 'You must define source element in option array!');
+        }else{
+            $sourceOptions = json_encode($this->options['source']['options']);
+        }
+        if(!isset($this->options['destination'])){
+            return new HttpException('505', 'You must define destination element in option array!');
+        }else{
+            $destinationOptions = json_encode($this->options['destination']['options']);
+        }
 
-        switch ($this->source) {
+        switch ($this->options['source']['type']) {
             case self::MODE_DRAGDROP:
-                $inputModeJs = <<<JS
+                $inputObject = <<<JS
                         $id.use(Uppy.DragDrop, {$sourceOptions});
 JS;
                 break;
             case self::MODE_FILEINPUT:
-                $inputModeJs = <<<JS
+                $inputObject = <<<JS
                         $id.use(Uppy.FileInput, {$sourceOptions});
 JS;
                 break;
         }
 
 
-        switch ($this->destination) {
+        switch ($this->options['destinaton']['type']) {
             case self::DEST_TUS:
-                $destinationModeJs = <<<JS
-                        $id.use(Tus, {
-                            endpoint: 'https://master.tus.io/files/', // use your tus endpoint here
-                            resume: true,
-                            retryDelays: [0, 1000, 3000, 5000]
+                $destinationObject = <<<JS
+                        $id.use(Tus, {$destinationOptions
+                            //endpoint: 'https://master.tus.io/files/', // use your tus endpoint here
+                            //resume: true,
+                            //retryDelays: [0, 1000, 3000, 5000]
                         })
 JS;
                 break;
             case self::DEST_XHR:
-                $destinationModeJs = <<<JS
+                $destinationObject = <<<JS
                         $id.use(XHRUpload, {
-                            endpoint: 'http://my-website.org/upload'
+                            $destinationOptions
                         })
 JS;
                 break;
@@ -122,8 +131,8 @@ JS;
                 // Options
                 target: '.for-Informer'
             })
-            $inputModeJs
-            destinationModeJs
+            $inputObject
+            $destinationObject
             $id.on('complete', result => {
                 console.log('successful files:', result.successful)
                 console.log('failed files:', result.failed)
