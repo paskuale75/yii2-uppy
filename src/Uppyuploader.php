@@ -9,11 +9,15 @@ use Yii;
 
 class Uppyuploader extends Widget
 {
+    const MODE_DRAGDROP = 'DragDrop';
+    const MODE_FILEINPUT = 'FileInput';
 
     public $options = []; //
     public $clientOptions = [];
     public $coreOptions = [];
-    public $dragDropOptions = [];
+    public $sourceOptions = [];
+
+    public $mode = self::MODE_DRAGDROP;
 
     /**
      * @locale : default language pack
@@ -30,7 +34,7 @@ class Uppyuploader extends Widget
     {
         $html = '';
         $id = $this->getId();
-        
+
         $this->registerJS($id);
         $content = $this->drawContentUploades();
         //$html .= Html::tag('div', '', ['class' => 'drag-drop-area', 'id' => $id]);
@@ -55,27 +59,52 @@ class Uppyuploader extends Widget
     {
         $options = json_encode($this->options);
         $clientOptions = json_encode($this->clientOptions);
-        $dragDropOptions = json_encode($this->dragDropOptions);
+        $sourceOptions = json_encode($this->sourceOptions);
         $coreOptions = json_encode($this->coreOptions);
 
+        switch ($this->mode) {
+            case self::MODE_DRAGDROP:
+                $js = <<<JS
+                    console.log($coreOptions);
+                    console.log($sourceOptions);
+                    var identifier = $id;
+                    var $id = Uppy.Core({$coreOptions});
 
-        $js = <<<JS
-console.log($coreOptions);
-console.log($dragDropOptions);
-var identifier = $id;
-var $id = Uppy.Core({$coreOptions});
-
-    $id.use(Uppy.ProgressBar, { 
-        target: '.for-ProgressBar',
-        hideAfterFinish: false 
-    });
-    $id.use(Uppy.Informer, {
-        // Options
-        target: '.for-Informer'
-    })
-    $id.use(Uppy.DragDrop, {$dragDropOptions});
-    $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
+                        $id.use(Uppy.ProgressBar, { 
+                            target: '.for-ProgressBar',
+                            hideAfterFinish: false 
+                        });
+                        $id.use(Uppy.Informer, {
+                            // Options
+                            target: '.for-Informer'
+                        })
+                        $id.use(Uppy.DragDrop, {$sourceOptions});
+                        $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
 JS;
+                break;
+            case self::MODE_FILEINPUT:
+                $js = <<<JS
+                    console.log($coreOptions);
+                    console.log($sourceOptions);
+                    var identifier = $id;
+                    var $id = Uppy.Core({$coreOptions});
+
+                        $id.use(Uppy.ProgressBar, { 
+                            target: '.for-ProgressBar',
+                            hideAfterFinish: false 
+                        });
+                        $id.use(Uppy.Informer, {
+                            // Options
+                            target: '.for-Informer'
+                        })
+                        $id.use(Uppy.FileInput, {$sourceOptions});
+                        $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
+JS;
+                break;
+        }
+
+
+
         $this->view->registerJs($js);
     }
 }
