@@ -97,7 +97,7 @@ JS;
         }
 
 
-        switch ($this->options['destinaton']['type']) {
+        switch ($this->options['destination']['type']) {
             case self::DEST_TUS:
                 $destinationObject = <<<JS
                         $id.use(Tus, {$destinationOptions
