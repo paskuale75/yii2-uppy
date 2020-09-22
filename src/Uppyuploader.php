@@ -123,7 +123,7 @@ JS;
                 target: '.for-Informer'
             })
             $inputModeJs
-            $id.use(Uppy.XHRUpload, { endpoint: '' });
+            destinationModeJs
             $id.on('complete', result => {
                 console.log('successful files:', result.successful)
                 console.log('failed files:', result.failed)
