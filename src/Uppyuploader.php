@@ -53,7 +53,7 @@ class Uppyuploader extends Widget
         $html = '';
         $content = $this->drawContentUploades();
         
-        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => $id]);
+        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => 'ProgressBar_'.$id]);
         $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
         if ($this->options['source']['type'] == self::MODE_DRAGDROP) {
             $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
@@ -70,7 +70,7 @@ class Uppyuploader extends Widget
 
     private function registerJs($id)
     {
-        
+        $identifier = $id;
         $coreOptions = json_encode($this->coreOptions);
         if(!isset($this->options['source'])){
             return new HttpException('505', 'You must define source element in option array!');
@@ -82,6 +82,8 @@ class Uppyuploader extends Widget
         }else{
             $destinationOptions = json_encode($this->options['destination']['options']);
         }
+
+        $progressBarOptions = json_encode($this->options['progressBar']);
 
         switch ($this->options['source']['type']) {
             case self::MODE_DRAGDROP:
@@ -97,21 +99,17 @@ JS;
         }
 
 
-        switch ($this->options['destination']['type']) {
+        switch ($this->options['destination']['type']) 
+        {
             case self::DEST_TUS:
                 $destinationObject = <<<JS
                         $id.use(Tus, {$destinationOptions
-                            //endpoint: 'https://master.tus.io/files/', // use your tus endpoint here
-                            //resume: true,
-                            //retryDelays: [0, 1000, 3000, 5000]
                         })
 JS;
                 break;
             case self::DEST_XHR:
                 $destinationObject = <<<JS
-                        $id.use(XHRUpload, {
-                            $destinationOptions
-                        })
+                        $id.use(XHRUpload, {$destinationOptions})
 JS;
                 break;
         }
@@ -120,13 +118,14 @@ JS;
         $js = <<<JS
         console.log($coreOptions);
         console.log($sourceOptions);
-        var identifier = $id;
+        console.log($destinationOptions);
+        console.log($progressBarOptions);
+        var XHRUpload = Uppy.XHRUpload;
+        var _identifier = $identifier;
+        var identifier = _identifier;
         var $id = Uppy.Core({$coreOptions});
 
-            $id.use(Uppy.ProgressBar, { 
-                target: '.for-ProgressBar',
-                hideAfterFinish: false 
-            });
+            $id.use(Uppy.ProgressBar, {$progressBarOptions});
             $id.use(Uppy.Informer, {
                 // Options
                 target: '.for-Informer'
