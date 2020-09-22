@@ -14,6 +14,37 @@ or run:
 
 You can manually install **yii2-uppy** by [downloading the source in ZIP-format](https://github.com/paskuale75/yii2-uppy/archive/master.zip).
 
+## Usage
+```php
+echo '<div  id="div_'.$myID.'" class="drag-drop-area col-md-12">';
+echo Uppyuploader::widget([
+    //'id' => 'uppy_'.$fmyID,
+    'mode' => Uppyuploader::MODE_FILEINPUT,
+    'options' => [
+        'informer' => [
+            //'class' => 'alert alert-primary'
+        ]
+    ],
+    'coreOptions' => [
+        'debug' => true,
+        'autoProceed' => true,
+        'target' => '#div_'.$myID,
+        'locale' => str_replace('-','_',Yii::$app->language),
+        'restrictions' => [
+            'maxFileSize' => 1000000,
+            'maxNumberOfFiles' => 1,
+            'minNumberOfFiles' => 1,
+            'allowedFileTypes' => ['image/*', 'video/*']
+        ]
+    ],
+    'sourceOptions' => [
+        'target' => '#div_'.$myID
+    ]
+]);
+echo '</div>
+```
+
+
 ## P.S.
 You may encounter problems with the 'composer update' command if you are using composer version 1.10.13, 
 downgrade to 1.10.10 and everything will work as it should.
