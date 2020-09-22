@@ -12,12 +12,16 @@ class Uppyuploader extends Widget
     const MODE_DRAGDROP = 'DragDrop';
     const MODE_FILEINPUT = 'FileInput';
 
+    const DEST_XHR = '';
+    const DEST_TUS = 'Tus';
+
     public $options = []; //
     public $clientOptions = [];
     public $coreOptions = [];
     public $sourceOptions = [];
 
-    public $mode = self::MODE_DRAGDROP;
+    public $source = self::MODE_DRAGDROP;
+    public $destination = 
 
     /**
      * @locale : default language pack
@@ -70,56 +74,61 @@ class Uppyuploader extends Widget
         $sourceOptions = json_encode($this->sourceOptions);
         $coreOptions = json_encode($this->coreOptions);
 
-        switch ($this->mode) {
+        switch ($this->source) {
             case self::MODE_DRAGDROP:
-                $js = <<<JS
-                    console.log($coreOptions);
-                    console.log($sourceOptions);
-                    var identifier = $id;
-                    var $id = Uppy.Core({$coreOptions});
-
-                        $id.use(Uppy.ProgressBar, { 
-                            target: '.for-ProgressBar',
-                            hideAfterFinish: false 
-                        });
-                        $id.use(Uppy.Informer, {
-                            // Options
-                            target: '.for-Informer'
-                        })
+                $inputModeJs = <<<JS
                         $id.use(Uppy.DragDrop, {$sourceOptions});
-                        $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
-                        $id.on('complete', result => {
-                            console.log('successful files:', result.successful)
-                            console.log('failed files:', result.failed)
-                        })
 JS;
                 break;
             case self::MODE_FILEINPUT:
-                $js = <<<JS
-                    console.log($coreOptions);
-                    console.log($sourceOptions);
-                    var identifier = $id;
-                    var $id = Uppy.Core({$coreOptions});
-
-                        $id.use(Uppy.ProgressBar, { 
-                            target: '.for-ProgressBar',
-                            hideAfterFinish: false 
-                        });
-                        $id.use(Uppy.Informer, {
-                            // Options
-                            target: '.for-Informer'
-                        })
+                $inputModeJs = <<<JS
                         $id.use(Uppy.FileInput, {$sourceOptions});
-                        $id.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' });
-                        $id.on('complete', result => {
-                            console.log('successful files:', result.successful)
-                            console.log('failed files:', result.failed)
+JS;
+                break;
+        }
+
+
+        switch ($this->destination) {
+            case self::DEST_TUS:
+                $destinationModeJs = <<<JS
+                        $id.use(Tus, {
+                            endpoint: 'https://master.tus.io/files/', // use your tus endpoint here
+                            resume: true,
+                            retryDelays: [0, 1000, 3000, 5000]
+                        })
+JS;
+                break;
+            case self::DEST_XHR:
+                $destinationModeJs = <<<JS
+                        $id.use(XHRUpload, {
+                            endpoint: 'http://my-website.org/upload'
                         })
 JS;
                 break;
         }
 
 
+        $js = <<<JS
+        console.log($coreOptions);
+        console.log($sourceOptions);
+        var identifier = $id;
+        var $id = Uppy.Core({$coreOptions});
+
+            $id.use(Uppy.ProgressBar, { 
+                target: '.for-ProgressBar',
+                hideAfterFinish: false 
+            });
+            $id.use(Uppy.Informer, {
+                // Options
+                target: '.for-Informer'
+            })
+            $inputModeJs
+            $id.use(Uppy.XHRUpload, { endpoint: '' });
+            $id.on('complete', result => {
+                console.log('successful files:', result.successful)
+                console.log('failed files:', result.failed)
+            })
+JS;
 
         $this->view->registerJs($js);
     }
