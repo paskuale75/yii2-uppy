@@ -21,7 +21,7 @@ class Uppyuploader extends Widget
     public $sourceOptions = [];
 
     public $source = self::MODE_DRAGDROP;
-    public $destination = 
+    public $destination = self::DEST_XHR;
 
     /**
      * @locale : default language pack
