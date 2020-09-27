@@ -39,12 +39,8 @@ echo Uppyuploader::widget([
             'options' => [
                 'endpoint' => Url::toRoute([
                     '//main/allegati/files/upload',
-                    'id_rif'    => $id_rif,
-                    'modrif'    => 2, //$file->modulo,
-                    'tipo'      => $file->tipo_id,
-                    'mult'      => $field['multiple'],
-                    'filetipo'  => implode(',', $field['filetipo']),
-                    'check'     => '0'
+                    'param1'    => $myParam,
+                    'param2'    => $myParam2
                 ]),
                 'headers' => [Yii::$app->request->csrfParam => Yii::$app->request->csrfToken],
                 'fieldName' => ['qqfile'],
