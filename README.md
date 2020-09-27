@@ -16,11 +16,47 @@ You can manually install **yii2-uppy** by [downloading the source in ZIP-format]
 
 ## Usage
 ```php
-echo '<div  id="div_'.$myID.'" class="col-md-12">';
+echo '<div  id="div_' . $uniqueKey . '" class="col-md-12">';
 echo Uppyuploader::widget([
-    // default mode => MODE_DRAGDROP
-    'mode' => Uppyuploader::MODE_FILEINPUT,
+    'id' => 'Uppy_' . $uniqueKey,
     'options' => [
+        'source' => [
+            'type' => Uppyuploader::MODE_FILEINPUT,
+            'options' => [
+                'target' => '#div_' . $uniqueKey,
+                'locale'   => [
+                    'strings' => [
+                        'browse'        => 'Seleziona file',
+                        'browseFiles'   => 'Seleziona file',
+                        'addMoreFiles'  => 'Seleziona file',
+                        'chooseFiles'   => 'Seleziona file',
+                    ]
+                ],
+            ]
+        ],
+        'destination' => [
+            'type' => Uppyuploader::DEST_XHR,
+            'options' => [
+                'endpoint' => Url::toRoute([
+                    '//main/allegati/files/upload',
+                    'id_rif'    => $id_rif,
+                    'modrif'    => 2, //$file->modulo,
+                    'tipo'      => $file->tipo_id,
+                    'mult'      => $field['multiple'],
+                    'filetipo'  => implode(',', $field['filetipo']),
+                    'check'     => '0'
+                ]),
+                'headers' => [Yii::$app->request->csrfParam => Yii::$app->request->csrfToken],
+                'fieldName' => ['qqfile'],
+                'resume'    => true,
+                'retryDelays' => ['0', '1000', '3000', '5000']
+            ]
+        ],
+        'progressBar' => [
+            'target' => '#ProgressBar_Uppy_' . $uniqueKey,
+            'fixed' => false,
+            'hideAfterFinish' => false
+        ],
         'informer' => [
             //'class' => 'alert alert-primary'
         ]
@@ -28,18 +64,15 @@ echo Uppyuploader::widget([
     'coreOptions' => [
         'debug' => true,
         'autoProceed' => true,
-        'target' => '#div_'.$myID,
-        'locale' => str_replace('-','_',Yii::$app->language),
+        'target' => '#div_' . $uniqueKey,
+        'locale' => str_replace('-', '_', Yii::$app->language),
         'restrictions' => [
             'maxFileSize' => 1000000,
             'maxNumberOfFiles' => 1,
             'minNumberOfFiles' => 1,
-            'allowedFileTypes' => ['image/*', 'video/*']
+            'allowedFileTypes' => ['.pdf']
         ]
     ],
-    'sourceOptions' => [
-        'target' => '#div_'.$myID
-    ]
 ]);
 echo '</div>
 ```
