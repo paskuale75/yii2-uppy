@@ -24,6 +24,8 @@ class Uppyuploader extends Widget
     public $source = self::MODE_DRAGDROP;
     public $destination = self::DEST_XHR;
 
+    public $events_onComplete;
+
     /**
      * @locale : default language pack
      */
@@ -85,6 +87,8 @@ class Uppyuploader extends Widget
 
         $progressBarOptions = json_encode($this->options['progressBar']);
 
+        $onComplete = $this->events_onComplete;
+
         switch ($this->options['source']['type']) {
             case self::MODE_DRAGDROP:
                 $inputObject = <<<JS
@@ -133,8 +137,9 @@ JS;
             $inputObject
             $destinationObject
             $id.on('complete', result => {
-                console.log('successful files:', result.successful)
-                console.log('failed files:', result.failed)
+                $onComplete;
+                console.log('successful files:', result.successful);
+                console.log('failed files:', result.failed);
             })
 JS;
 
