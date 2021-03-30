@@ -16,7 +16,6 @@
         "yiisoft/yii2-bootstrap4": "^2.0",
         "bower-asset/commonjs-require": "*",
         "npm-asset/uppy": "^1.21",
-        "npm-asset/uppy-aws-s3": "^1.7.8",
         "npm-asset/uppy--locales": "^1.16"
     },
     "config": {
