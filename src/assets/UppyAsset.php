@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class UppyAsset extends AssetBundle{
 
-    public $sourcePath = '@npm/';
+    public $sourcePath = '@bower/';
     
     public function init(){
         //$lang = str_replace('-','_',Yii::$app->language);
