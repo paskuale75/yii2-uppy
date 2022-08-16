@@ -54,8 +54,8 @@ class Uppyuploader extends Widget
         $id = $this->getId();
         $html = '';
         $content = $this->drawContentUploades();
-
-        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => 'ProgressBar_' . $id]);
+        
+        $html .= Html::tag('div', '', ['class' => 'for-ProgressBar', 'id' => 'ProgressBar_'.$id]);
         $html .= Html::tag('div', '', ['class' => 'for-Informer', 'id' => $id]);
         if ($this->options['source']['type'] == self::MODE_DRAGDROP) {
             $html .= Html::tag('div', $content, ['class' => 'uploaded-files', 'id' => $id]);
@@ -74,14 +74,14 @@ class Uppyuploader extends Widget
     {
         $identifier = $id;
         $coreOptions = json_encode($this->coreOptions);
-        if (!isset($this->options['source'])) {
+        if(!isset($this->options['source'])){
             return new HttpException('505', 'You must define source element in option array!');
-        } else {
+        }else{
             $sourceOptions = json_encode($this->options['source']['options']);
         }
-        if (!isset($this->options['destination'])) {
+        if(!isset($this->options['destination'])){
             return new HttpException('505', 'You must define destination element in option array!');
-        } else {
+        }else{
             $destinationOptions = json_encode($this->options['destination']['options']);
         }
 
@@ -103,10 +103,12 @@ JS;
         }
 
 
-        switch ($this->options['destination']['type']) {
+        switch ($this->options['destination']['type']) 
+        {
             case self::DEST_TUS:
                 $destinationObject = <<<JS
-                        $id.use(Tus, {$destinationOptions})
+                        $id.use(Tus, {$destinationOptions
+                        })
 JS;
                 break;
             case self::DEST_XHR:
@@ -118,41 +120,27 @@ JS;
 
 
         $js = <<<JS
-        import Uppy from '@uppy/core'
-        import FileInput from '@uppy/file-input'
-        import XHRUpload from '@uppy/xhr-upload'
-        import ProgressBar from '@uppy/progress-bar'
+        console.log($coreOptions);
+        console.log($sourceOptions);
+        console.log($destinationOptions);
+        console.log($progressBarOptions);
+        var XHRUpload = Uppy.XHRUpload;
+        var _identifier = $identifier;
+        var identifier = _identifier;
+        var $id = Uppy.Core({$coreOptions});
 
-        document.querySelector('.Uppy').innerHTML = ''
-
-        const uppy = new Uppy({ debug: true, autoProceed: true })
-        uppy.use(FileInput, {
-        target: '.Uppy',
-        })
-        uppy.use(ProgressBar, {
-        target: '.UppyProgressBar',
-        hideAfterFinish: false,
-        })
-        uppy.use(XHRUpload, {
-        endpoint: 'https://xhr-server.herokuapp.com/upload',
-        formData: true,
-        fieldName: 'files[]',
-        })
-
-        // And display uploaded files
-        uppy.on('upload-success', (file, response) => {
-        const url = response.uploadURL
-        const fileName = file.name
-
-        const li = document.createElement('li')
-        const a = document.createElement('a')
-        a.href = url
-        a.target = '_blank'
-        a.appendChild(document.createTextNode(fileName))
-        li.appendChild(a)
-
-        document.querySelector('.uploaded-files ol').appendChild(li)
-})
+            $id.use(Uppy.ProgressBar, {$progressBarOptions});
+            $id.use(Uppy.Informer, {
+                // Options
+                target: '.for-Informer'
+            })
+            $inputObject
+            $destinationObject
+            $id.on('complete', result => {
+                $onComplete;
+                console.log('successful files:', result.successful);
+                console.log('failed files:', result.failed);
+            })
 JS;
 
         $this->view->registerJs($js);
