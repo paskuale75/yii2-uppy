@@ -16,7 +16,7 @@
         "yiisoft/yii2-bootstrap4": "^2.0",
         "bower-asset/commonjs-require": "*",
         "npm-asset/uppy": "^2.13",
-        "npm-asset/uppy--locales": "^1.16"
+        "npm-asset/uppy--locales": "^2.1"
     },
     "config": {
         "process-timeout": 1800,
