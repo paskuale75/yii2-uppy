@@ -12,7 +12,7 @@ class UppyAsset extends AssetBundle{
         //$lang = str_replace('-','_',Yii::$app->language);
         $this->js = [
             "uppy--locales/dist/it_IT.min.js", //<- don't work
-            "uppy/dist/uppy.min.js",
+            "uppy/packages/@uppy/core/src/Uppy.js",
             //"https://transloadit.edgly.net/releases/uppy/locales/v1.16.7/{$lang}.min.js"
         ];
     }
